@@ -55,16 +55,17 @@ namespace Pokedex.Test
 
             var funTranslationMewTwoYodaApiResponse =
                 File.ReadAllText("ResponseSamples\\FunTranslationMewTwoYodaApiResponse.json");
-            var funTranslate =
+            var funTranslate1 =
                 JsonConvert.DeserializeObject<FunTranslationsResponse>(funTranslationMewTwoYodaApiResponse);
-            _yodaTranslationMewTwo = funTranslate?.Contents.Translated;
-            var mewtwoText = funTranslate?.Contents.Text;
+            _yodaTranslationMewTwo = funTranslate1?.Contents.Translated;
+            var mewtwoText = funTranslate1?.Contents.Text;
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(mewtwoText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", mewtwoText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
@@ -76,9 +77,10 @@ namespace Pokedex.Test
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(mewtwoText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", mewtwoText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
@@ -103,16 +105,17 @@ namespace Pokedex.Test
 
             var funTranslationDruddigonYodaApiResponse =
                 File.ReadAllText("ResponseSamples\\FunTranslationDruddigonYodaApiResponse.json");
-            funTranslate =
+            var funTranslate2 =
                 JsonConvert.DeserializeObject<FunTranslationsResponse>(funTranslationDruddigonYodaApiResponse);
-            _yodaTranslationDruddigon = funTranslate?.Contents.Translated;
-            var druddigonText = funTranslate?.Contents.Text;
+            _yodaTranslationDruddigon = funTranslate2?.Contents.Translated;
+            var druddigonText = funTranslate2?.Contents.Text;
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(druddigonText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", druddigonText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
@@ -125,9 +128,10 @@ namespace Pokedex.Test
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(druddigonText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", druddigonText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
@@ -152,14 +156,16 @@ namespace Pokedex.Test
 
             var funTranslationDittoYodaApiResponse =
                 File.ReadAllText("ResponseSamples\\FunTranslationDittoYodaApiResponse.json");
-            funTranslate = JsonConvert.DeserializeObject<FunTranslationsResponse>(funTranslationDittoYodaApiResponse);
-            var dittoText = funTranslate?.Contents.Text;
+            var funTranslate4 =
+                JsonConvert.DeserializeObject<FunTranslationsResponse>(funTranslationDittoYodaApiResponse);
+            var dittoText = funTranslate4?.Contents.Text;
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(dittoText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.YodaUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", dittoText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
@@ -168,15 +174,16 @@ namespace Pokedex.Test
 
             var funTranslationDittoShakespeareApiResponse =
                 File.ReadAllText("ResponseSamples\\FunTranslationDittoShakespeareApiResponse.json");
-            funTranslate =
+            var funTranslate3 =
                 JsonConvert.DeserializeObject<FunTranslationsResponse>(funTranslationDittoShakespeareApiResponse);
-            _shakespeareTranslationDitto = funTranslate?.Contents.Translated;
+            _shakespeareTranslationDitto = funTranslate3?.Contents.Translated;
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
                     ItExpr.Is<HttpRequestMessage>(r =>
-                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.RequestUri
-                            .ToString()
-                            .Contains(Uri.EscapeDataString(Uri.EscapeDataString(dittoText)))),
+                        r.RequestUri.ToString().Contains(funTranslationApiClientSettings.ShakespeareUri) && r.Content
+                            .Headers.ContentLength
+                            .Equals(new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                                {new("text", dittoText)}).Headers.ContentLength)),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {

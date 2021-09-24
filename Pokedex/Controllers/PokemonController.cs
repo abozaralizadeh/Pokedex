@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -79,7 +80,7 @@ namespace Pokedex.Controllers
             _logger.LogTrace($"Fun translation StatusCode {statusCode} on Pokemon: {name}");
 
             if (!string.IsNullOrEmpty(funTranslationsResponse?.Contents?.Translated))
-                description = Uri.UnescapeDataString(funTranslationsResponse.Contents.Translated);
+                description = funTranslationsResponse.Contents.Translated;
 
             return Ok(new Response()
             {
@@ -153,8 +154,8 @@ namespace Pokedex.Controllers
         private async Task<(int, FunTranslationsResponse)> GetFunTranslate(string text, string uri)
         {
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(uri)) return (400, null);
-            var queryParam = $"?text={Uri.EscapeDataString(Uri.EscapeDataString(text))}";
-            using var response = await _funTranslationsHttpClient.GetAsync(uri + queryParam);
+            List<KeyValuePair<string, string>> postData = new() { new KeyValuePair<string, string>("text", text) };
+            using var response = await _funTranslationsHttpClient.PostAsync(uri, new FormUrlEncodedContent(postData));
             var statusCode = (int) response.StatusCode;
             if (!response.IsSuccessStatusCode) return (statusCode, null);
             var responseString = await response.Content.ReadAsStringAsync();
