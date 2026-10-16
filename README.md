@@ -1,6 +1,6 @@
 
 
-Pokedx is an open source asp.net web app.
+Pokedex is an open source asp.net web app.
 
 ## Download and install .NET SDK
 
